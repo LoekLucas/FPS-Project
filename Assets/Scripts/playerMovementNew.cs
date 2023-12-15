@@ -22,6 +22,7 @@ public class PlayerMovementNew : MonoBehaviour
     public float hoverEnergy = 300f;
     public float currentCheckpoint;
     public float playerHealth = 3;
+    private bool hasReachedEnd = false;
 
     public float secondsCount = 0f;
     public float minuteCount = 0f;
@@ -155,16 +156,6 @@ public class PlayerMovementNew : MonoBehaviour
             else if (currentCheckpoint == 4) // If current checkpoint is 4
             {
                 TeleportPlayer(new Vector3(24, 82.41f, -100)); // Teleport player to given position
-                playerHealth++; // Add 1 to player health
-
-                if (currentTime < bestTime) // If your current time is lower than your best time
-                {
-                    bestTime = currentTime; // Set current time as your best
-                    // Sets current times values to best timer values
-                    bestSecondsCount = secondsCount; 
-                    bestMinuteCount = minuteCount;
-                    bestHourCount = hourCount;
-                }
             }
 
             else // If current checkpoint is anything other than 1-4
@@ -176,8 +167,10 @@ public class PlayerMovementNew : MonoBehaviour
                 }
             }
 
-            playerHealth--; // Remove 1 from player health
-
+            if (!hasReachedEnd) // If end hasn't been reached
+            {
+                playerHealth--; // Remove 1 from player health
+            }
         }
 
         else if (collision.gameObject.CompareTag("checkPoint1") && currentCheckpoint == 0) // If trigger's tag is "checkPoint1" and your current checkpoint is 0
@@ -198,6 +191,16 @@ public class PlayerMovementNew : MonoBehaviour
         else if (collision.gameObject.CompareTag("checkPoint4") && currentCheckpoint == 3) // If trigger's tag is "checkPoint4" and your current checkpoint is 3
         {
             currentCheckpoint = 4; // Set current checkpoint to subsequent value
+            hasReachedEnd = true; 
+
+            if (currentTime < bestTime) // If your current time is lower than your best time
+            {
+                bestTime = currentTime; // Set current time as your best
+                                        // Sets current times values to best timer values
+                bestSecondsCount = secondsCount;
+                bestMinuteCount = minuteCount;
+                bestHourCount = hourCount;
+            }
         }
 
         else if (collision.gameObject.CompareTag("timeReset")) // If trigger's tag is "timeReset"
@@ -209,6 +212,8 @@ public class PlayerMovementNew : MonoBehaviour
             hourCount = 0;
 
             currentCheckpoint = 0; // Reset current checkpoint
+
+            TeleportPlayer(new Vector3(0, 1.40999997f, -7.23000002f)); // Teleport player to given position
         }
     }
 
@@ -243,8 +248,7 @@ public class PlayerMovementNew : MonoBehaviour
     private void TextManager()
     {
         if (currentCheckpoint != 4) // If current checkpoint is not 4
-        {
-            livesText.text = "Lives: " + playerHealth; 
+        { 
             hoverText.text = "Hover Left: " + hoverEnergy / 100; // Think deviding the number by 100 looks better
             timerText.text = hourCount + "h:" + minuteCount + "m:" + secondsCount + "s";
             infHoverText.text = ""; // Made this field empty because otherwise it would keep infinite hover text from last run if time is restarted
@@ -252,10 +256,19 @@ public class PlayerMovementNew : MonoBehaviour
 
         else // If current checkpoint is anything other than not 4
         {
-            livesText.text = "Lives: Infinite";
             hoverText.text = ""; // Makes this field empty because otherwise it would overlap
             infHoverText.text = "Infinite Hover";
             timerText.text = "Your final time is: " + hourCount + "h:" + minuteCount + "m:" + secondsCount + "s" + "!";
+        }
+
+        if (!hasReachedEnd) // If end hasn't been reached
+        {
+            livesText.text = "Lives: " + playerHealth;
+        }
+
+        else // Otherwise
+        {
+            livesText.text = "Lives: Infinite";
         }
 
         bestTimeText.text = "Best Time: " + bestHourCount + "h:" + bestMinuteCount + "m:" + bestSecondsCount + "s";

@@ -9063,7 +9063,7 @@ PrefabInstance:
       objectReference: {fileID: 703930539}
     - target: {fileID: 5142777816139700013, guid: 1e6951c60bae2b34b99dcca4a3a52bd6, type: 3}
       propertyPath: hoverEnergy
-      value: 3
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 5142777816139700013, guid: 1e6951c60bae2b34b99dcca4a3a52bd6, type: 3}
       propertyPath: bestTimeText
