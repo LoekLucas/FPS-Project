@@ -225,7 +225,10 @@ public class PlayerMovementNew : MonoBehaviour
     private void Jump()
     {
         velocity.y = Mathf.Sqrt(jumpHeight * -2 * gravityValue); // ?
-        timesDoubleJumped++; // Add 1 to time double jumped
+        if (currentCheckpoint != 4) // If current checkpoint is not equal to 4
+        {
+            timesDoubleJumped++; // Add 1 to time double jumped
+        }
     }
 
     private void Idle() { } // Placeholder in case of wanting to add something to being idle
