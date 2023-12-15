@@ -4,20 +4,7 @@ using UnityEngine;
 public class checkPointScript : MonoBehaviour
 {
     public string currentCheckpoint;
-    public GameObject Player;
-
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public GameObject Player; // Asking for game object
 
     private void OnTriggerEnter(Collider collision)
     {
